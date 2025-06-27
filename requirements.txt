@@ -4,5 +4,3 @@ numpy
 joblib
 scikit-learn
 gunicorn
-gzip
-pickle
