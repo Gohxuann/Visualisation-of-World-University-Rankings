@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>World University Rankings Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google Fonts for modern typography -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #f6f6f6 60%, #e8effc 100%);
+      font-family: 'Montserrat', Arial, sans-serif;
+      color: #23395D;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      opacity: 0;
+      transition: opacity 1s;
+    }
+
+    body.fade-in {
+      opacity: 1;
+    }
+
+    nav {
+      background: #fff;
+      box-shadow: 0 3px 16px rgba(35, 57, 93, 0.05);
+      padding: 0.4rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2vw;
+    }
+
+    .nav-title {
+      color: #23395D;
+      font-weight: 700;
+      font-size: 1.4rem;
+      text-decoration: none;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #23395D;
+      font-weight: 600;
+      text-decoration: none;
+      margin-left: 28px;
+      padding: 7px 16px;
+      border-radius: 20px;
+      transition: background 0.18s;
+    }
+
+    .nav-links a.active,
+    .nav-links a:hover {
+      background: #FFD700;
+      color: #23395D;
+    }
+
+    header {
+      background: #23395D;
+      color: #FFD700;
+      padding: 32px 0 16px 0;
+      text-align: center;
+      letter-spacing: 1px;
+      border-bottom-left-radius: 32px;
+      border-bottom-right-radius: 32px;
+      box-shadow: 0 4px 20px rgba(35, 57, 93, 0.09);
+      margin-bottom: 8px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.4rem;
+      font-weight: 700;
+    }
+
+    header p {
+      color: #fffbe7;
+      font-size: 1rem;
+      margin-top: 10px;
+      font-weight: 400;
+      opacity: 0.85;
+    }
+
+    .dashboard-container {
+      max-width: 1200px;
+      width: 97vw;
+      margin: 40px auto 0 auto;
+      padding: 24px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 32px rgba(35, 57, 93, 0.07);
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .responsive-iframe {
+      position: relative;
+      width: 100%;
+      padding-bottom: 60%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(35, 57, 93, 0.06);
+      background: #f6f6f6;
+      margin-top: 12px;
+      margin-bottom: 12px;
+    }
+
+    .responsive-iframe iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .dashboard-container:hover {
+      box-shadow: 0 8px 40px rgba(35, 57, 93, 0.11);
+    }
+
+    iframe {
+      width: 100%;
+      min-height: 600px;
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(35, 57, 93, 0.06);
+      background: #f6f6f6;
+      margin-top: 12px;
+      margin-bottom: 12px;
+      transition: box-shadow 0.2s;
+    }
+
+    @media (max-width: 900px) {
+      .dashboard-container {
+        max-width: 99vw;
+        padding: 8px;
+      }
+
+      iframe {
+        min-height: 450px;
+      }
+
+      .nav-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 20px 0 8px 0;
+      }
+
+      .dashboard-container {
+        padding: 2vw;
+      }
+
+      iframe {
+        min-height: 320px;
+      }
+
+      .nav-title {
+        font-size: 1.07rem;
+      }
+
+      .nav-links a {
+        margin-left: 8px;
+        padding: 6px 8px;
+      }
+    }
+
+    footer {
+      text-align: center;
+      color: #7d7d7d;
+      padding: 12px 0 8px 0;
+      font-size: 0.98rem;
+      margin-top: 30px;
+      opacity: 0.9;
+    }
+
+    .loader {
+      border: 5px solid #e0e0e0;
+      border-top: 5px solid #FFD700;
+      border-radius: 50%;
+      width: 38px;
+      height: 38px;
+      animation: spin 1.1s linear infinite;
+      margin: 50px auto;
+      display: none;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <div class="nav-content">
+      <a class="nav-title" href="index.html">🌐 World University Rankings</a>
+      <div class="nav-links">
+        <a href="index.html" class="active">Dashboard</a>
+        <a href="predict.html">Predict Rank</a>
+      </div>
+    </div>
+  </nav>
+  <header>
+    <h1>World University Rankings Dashboard</h1>
+    <p>Explore global trends, gender balance, and internationalization among the world's top universities. Powered by
+      Power BI.</p>
+  </header>
+
+  <div class="dashboard-container">
+    <div class="loader" id="loader"></div>
+    <iframe id="powerbi-embed" title="World University Rankings Dashboard"
+      src="https://app.powerbi.com/reportEmbed?reportId=8fe8918f-2b91-48fc-8b91-55d3a0095f8e&autoAuth=true&ctid=d494e113-528e-40ab-90d9-162de2fca3f3"
+      allowFullScreen="true" onload="hideLoader()"></iframe>
+  </div>
+
+  <footer>
+    &copy; 2024 World University Rankings Dashboard &nbsp;|&nbsp; Designed by Goh Hong Xuan for education & analytics
+  </footer>
+  <script>
+    function hideLoader() {
+      document.getElementById('loader').style.display = 'none';
+    }
+    window.onload = function () {
+      document.getElementById('loader').style.display = 'block';
+      document.body.classList.add('fade-in');
+    };
+    document.getElementById('powerbi-embed').onerror = function () {
+      document.getElementById('loader').style.display = 'none';
+      alert('There was a problem loading the Power BI report.');
+    };
+  </script>
+</body>
+
+t.add('fade-in');
+    };
+    document.getElementById('powerbi-embed').onerror = function () {
+      document.getElementById('loader').style.display = 'none';
+      alert('There was a problem loading the Power BI report.');
+    };
+  </script>
+</body>
+
+</html>

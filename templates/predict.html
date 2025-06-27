@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Predict University Rank</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #f6f6f6 60%, #e8effc 100%);
+      font-family: 'Montserrat', Arial, sans-serif;
+      color: #23395D;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    nav {
+      background: #fff;
+      box-shadow: 0 3px 16px rgba(35, 57, 93, 0.05);
+      padding: 0.4rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2vw;
+    }
+    .nav-title {
+      color: #23395D;
+      font-weight: 700;
+      font-size: 1.4rem;
+      text-decoration: none;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+    }
+    .nav-links a {
+      color: #23395D;
+      font-weight: 600;
+      text-decoration: none;
+      margin-left: 28px;
+      padding: 7px 16px;
+      border-radius: 20px;
+      transition: background 0.18s;
+    }
+    .nav-links a.active,
+    .nav-links a:hover {
+      background: #FFD700;
+      color: #23395D;
+    }
+    .predict-container {
+      max-width: 480px;
+      margin: 60px auto;
+      padding: 32px 28px 40px 28px;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 22px rgba(35, 57, 93, .08);
+      text-align: center;
+    }
+    h2 {
+      color: #FFD700;
+      font-weight: 700;
+      margin-bottom: 18px;
+      font-size: 2rem;
+    }
+    .input-group {
+      margin: 22px 0 12px 0;
+      text-align: left;
+    }
+    label {
+      font-size: 1.03rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+      display: block;
+    }
+    input[type=number] {
+      width: 100%;
+      padding: 12px 8px;
+      font-size: 1.06rem;
+      border-radius: 6px;
+      border: 1px solid #bbb;
+      background: #f7fafc;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input[type=number]:focus {
+      border-color: #23A6D5;
+    }
+    button {
+      background: #23395D;
+      color: #FFD700;
+      border: none;
+      padding: 12px 34px;
+      border-radius: 7px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1.11rem;
+      margin-top: 12px;
+      transition: background 0.2s;
+      box-shadow: 0 2px 12px rgba(35, 57, 93, 0.06);
+    }
+    button:hover, button:focus {
+      background: #182742;
+      outline: none;
+    }
+    #prediction-result {
+      margin-top: 30px;
+      font-size: 1.22rem;
+      color: #23A6D5;
+      font-weight: 600;
+      min-height: 36px;
+    }
+    .loader {
+      border: 5px solid #eee;
+      border-top: 5px solid #FFD700;
+      border-radius: 50%;
+      width: 38px;
+      height: 38px;
+      animation: spin 1.1s linear infinite;
+      margin: 22px auto 0 auto;
+      display: none;
+    }
+    .confirmation {
+      margin-top: 30px;
+      min-height: 48px;
+      font-size: 1.18rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.7s;
+      font-weight: 600;
+    }
+    .confirmation.show {
+      opacity: 1;
+      animation: popIn 0.4s;
+    }
+    .confirmation .icon {
+      font-size: 1.6rem;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+    .confirmation.success {
+      color: #00b67a;
+    }
+    .confirmation.error {
+      color: #d51a1a;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0.3;}
+      60% { transform: scale(1.1);}
+      100% { transform: scale(1); opacity: 1;}
+    }
+    button:active {
+      transform: scale(0.98);
+      box-shadow: 0 0 0 #000;
+    }
+    @media (max-width:600px) {
+      .predict-container { padding: 14px 3vw 20px 3vw; margin: 32px 1vw; }
+      h2 { font-size: 1.3rem; }
+      .nav-title { font-size: 1.07rem;}
+      .nav-links a { margin-left: 8px; padding: 6px 8px;}
+    }
+    footer {
+      text-align: center;
+      color: #7d7d7d;
+      padding: 12px 0 8px 0;
+      font-size: 0.98rem;
+      margin-top: 30px;
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-content">
+      <a class="nav-title" href="index.html">🌐 World University Rankings</a>
+      <div class="nav-links">
+        <a href="index.html">Dashboard</a>
+        <a href="predict.html" class="active">Predict Rank</a>
+      </div>
+    </div>
+  </nav>
+  <div class="predict-container">
+    <h2>Predict University Rank</h2>
+    <form id="predictForm" autocomplete="off">
+      <div class="input-group">
+        <label for="overall_score">Overall Score</label>
+        <input type="number" id="overall_score" required min="0" max="100" step="0.1" placeholder="e.g. 85.6">
+      </div>
+      <div class="input-group">
+        <label for="industry_impact">Industry Impact</label>
+        <input type="number" id="industry_impact" required min="0" max="100" step="0.1" placeholder="e.g. 75.0">
+      </div>
+      <div class="input-group">
+        <label for="international_outlook">International Outlook</label>
+        <input type="number" id="international_outlook" required min="0" max="100" step="0.1" placeholder="e.g. 82.3">
+      </div>
+      <button type="submit">Predict</button>
+    </form>
+    <div class="loader" id="loader"></div>
+    <div id="confirmation" class="confirmation"></div>
+  </div>
+  <footer>
+    &copy; 2024 World University Rankings Dashboard &nbsp;|&nbsp; Designed by Goh Hong Xuan
+  </footer>
+  <script>
+    const form = document.getElementById('predictForm');
+    const confirmation = document.getElementById('confirmation');
+    const loader = document.getElementById('loader');
+
+    function showConfirmation(message, type = "success") {
+      confirmation.innerHTML = (type === "success"
+        ? `<span class="icon">✅</span> ${message}`
+        : `<span class="icon">❌</span> ${message}`
+      );
+      confirmation.className = "confirmation " + type + " show";
+      // Auto-hide after 5s (except errors stay longer)
+      setTimeout(() => {
+        confirmation.classList.remove("show");
+      }, type === "success" ? 4000 : 7000);
+    }
+
+    form.onsubmit = function (e) {
+      e.preventDefault();
+      confirmation.classList.remove("show");
+      loader.style.display = 'block';
+
+      const overall_score = document.getElementById('overall_score').value;
+      const industry_impact = document.getElementById('industry_impact').value;
+      const international_outlook = document.getElementById('international_outlook').value;
+
+      const url = `http://127.0.0.1:5000/predict?overall_score=${overall_score}&industry_impact=${industry_impact}&international_outlook=${international_outlook}`;
+
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          loader.style.display = 'none';
+          if (data.predicted_rank !== undefined) {
+            showConfirmation(
+              `Predicted University Rank: <span style="color:#FFD700;font-weight:bold;">${data.predicted_rank}</span>`,
+              "success"
+            );
+            form.reset();
+          } else if (data.error) {
+            showConfirmation("Error: " + data.error, "error");
+          } else {
+            showConfirmation("Unexpected error. Please try again.", "error");
+          }
+        })
+        .catch(() => {
+          loader.style.display = 'none';
+          showConfirmation("Network error. Is your API running?", "error");
+        });
+    }//
+  </script>
+</body>
+</html>
