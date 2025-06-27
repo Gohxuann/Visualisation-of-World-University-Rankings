@@ -13,6 +13,10 @@ model = joblib.load("rf_rank_predictor.pkl")
 app = Flask(__name__)
 CORS(app)
 
+@app.route("/")
+def home():
+    return "API is running! Use /predict to get predictions."
+
 @app.route("/predict", methods=["GET"])
 def predict():
     try:
