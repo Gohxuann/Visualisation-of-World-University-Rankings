@@ -1,4 +1,3 @@
-
 from flask import Flask, request, jsonify
 import joblib
 import numpy as np
@@ -17,9 +16,17 @@ CORS(app)
 def predict():
     try:
         # Extract features from query string
-        overall_score = float(request.args.get("overall_score"))
-        industry_impact = float(request.args.get("industry_impact"))
-        international_outlook = float(request.args.get("international_outlook"))
+        overall_score = request.args.get("overall_score")
+        industry_impact = request.args.get("industry_impact")
+        international_outlook = request.args.get("international_outlook")
+
+        # Validate inputs
+        if overall_score is None or industry_impact is None or international_outlook is None:
+            return jsonify({"error": "Missing input parameters"}), 400
+
+        overall_score = float(overall_score)
+        industry_impact = float(industry_impact)
+        international_outlook = float(international_outlook)
 
         # Prepare input for prediction (must match training order)
         features = np.array([[overall_score, industry_impact, international_outlook]])
@@ -28,6 +35,8 @@ def predict():
         return jsonify({
             "predicted_rank": round(float(pred), 2)
         })
+    except ValueError:
+        return jsonify({"error": "Invalid input type"}), 400
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 

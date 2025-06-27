@@ -253,16 +253,10 @@
     };
     document.getElementById('powerbi-embed').onerror = function () {
       document.getElementById('loader').style.display = 'none';
-      alert('There was a problem loading the Power BI report.');
-    };
-  </script>
-</body>
-
-t.add('fade-in');
-    };
-    document.getElementById('powerbi-embed').onerror = function () {
-      document.getElementById('loader').style.display = 'none';
-      alert('There was a problem loading the Power BI report.');
+      const errorMessage = document.createElement('div');
+      errorMessage.innerText = 'There was a problem loading the Power BI report. Please try again later.';
+      errorMessage.style.color = 'red';
+      document.querySelector('.dashboard-container').appendChild(errorMessage);
     };
   </script>
 </body>
