@@ -238,7 +238,7 @@
       const industry_impact = document.getElementById('industry_impact').value;
       const international_outlook = document.getElementById('international_outlook').value;
 
-      const url = `http://127.0.0.1:5000/predict?overall_score=${overall_score}&industry_impact=${industry_impact}&international_outlook=${international_outlook}`;
+      const url = `https://visualisation-of-world-university.onrender.com/predict?overall_score=${overall_score}&industry_impact=${industry_impact}&international_outlook=${international_outlook}`;
 
       fetch(url)
         .then(res => res.json())
