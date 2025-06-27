@@ -1,13 +1,14 @@
 from flask import Flask, request, jsonify, render_template
-import joblib
 import numpy as np
+import gzip
+import pickle
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 
-# Load your trained Random Forest model
-model = joblib.load("rf_rank_predictor.pkl")
+with gzip.open("rf_rank_predictor.pkl.gz", "rb") as f:
+    model = pickle.load(f)
 
 @app.route("/")
 def home():
