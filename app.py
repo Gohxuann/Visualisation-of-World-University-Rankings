@@ -1,17 +1,21 @@
-
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import joblib
 import numpy as np
 from flask_cors import CORS
-import os
 
-
+app = Flask(__name__)
+CORS(app)
 
 # Load your trained Random Forest model
 model = joblib.load("rf_rank_predictor.pkl")
 
-app = Flask(__name__)
-CORS(app)
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+@app.route("/predict_page")
+def predict_page():
+    return render_template("predict.html")
 
 @app.route("/predict", methods=["GET"])
 def predict():
